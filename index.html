@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Consultar Localidade</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="card">
+
+        <h1>Consulte sua localidade</h1>
+
+        <input type="text" placeholder="CEP SEM TRAÇO" id="cep" required onkeypress="if(event.key === 'Enter') buscarCep()"><br>
+        <button id="enviar" onclick="buscarCep()">CONFIRMAR</button>
+
+
+        <p id="localidade"> </p>
+    </div>
+
+
+
+    <script>
+
+        function buscarCep() {
+            var cep = parseInt(document.getElementById('cep').value)
+
+            let localidade = document.getElementById('localidade')
+
+
+            fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log(data)
+
+                    if (data.erro == "true") {
+                        localidade.innerHTML = `CEP não encontrado`
+                    } else {
+                        localidade.innerHTML = `Localidade: ${data.localidade} - ${data.uf}`
+                    }
+                }
+                )
+
+        }
+
+    </script>
+</body>
+
+</html>
